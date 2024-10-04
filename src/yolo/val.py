@@ -27,7 +27,7 @@ def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
     print(img_files)
 
     results = []
-    for img_file in img_files[0:1]:
+    for img_file in img_files:
         img = cv2.imread(img_file)
         img_h, img_w, img_c = img.shape
         cnt = 0
