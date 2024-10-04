@@ -12,7 +12,7 @@ FILE = ROOT.parent
 
 def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
                     patch_imgsz=512,
-                    confidence_threshold=6):
+                    confidence_threshold=.6):
 
     patch_overlap_ratio = 0.1
     dx = int((1. - patch_overlap_ratio) * patch_imgsz)
@@ -21,7 +21,8 @@ def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
     model = YOLO(FILE / Path("yolox-obb.pt"))
     # model = YOLO("yolo11n-obb.pt")
     
-    img_files = glob(osp.join(input_dir, '*.png'))
+    # img_files = glob(osp.join(input_dir, '*.png'))
+    img_files = glob(f'{input_dir}/**/*.png', recursive=True)
     print(os.listdir(input_dir))
     print(img_files)
 
