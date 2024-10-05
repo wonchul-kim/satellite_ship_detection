@@ -15,7 +15,7 @@ for mode in modes:
     if not osp.exists(output_dir):
         os.mkdir(output_dir)
     
-    output_dir = '/HDD/datasets/public/DOTA_ship/{mode}'
+    output_dir = f'/HDD/datasets/public/DOTA_ship/{mode}'
 
     if not osp.exists(output_dir):
         os.mkdir(output_dir)
