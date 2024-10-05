@@ -15,7 +15,7 @@ FILE = ROOT.parent
 
 def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
                     patch_imgsz=512,
-                    confidence_threshold=.6):
+                    confidence_threshold=.3):
 
     patch_overlap_ratio = 0.1
     dx = int((1. - patch_overlap_ratio) * patch_imgsz)
