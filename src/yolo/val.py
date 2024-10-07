@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve()
 FILE = ROOT.parent
 
 def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
-                    patch_imgsz=512,
+                    patch_imgsz=1024,
                     confidence_threshold=.3):
 
     patch_overlap_ratio = 0.1
@@ -56,10 +56,10 @@ def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
                 obb_result = output.obb
                 classes = obb_result.cls.tolist()
                 xywhrs = obb_result.xywhr
-                if 1 in classes:
+                if 0 in classes:
                     result = {'image_name': osp.split(img_file)[-1]}
                     for (cls, xywhr) in zip(classes, xywhrs):
-                        if cls == 1:
+                        if cls == 0:
                             cx, cy, width, height, angle = xywhr
                             result.update({'cx': cx.item() + xmin, 'cy': cy.item() + ymin, 
                                         'width': width.item(), 'height': height.item(), 

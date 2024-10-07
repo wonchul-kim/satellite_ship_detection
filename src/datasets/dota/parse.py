@@ -10,8 +10,8 @@ modes = ['train', 'val']
 labels = ['ship']
 
 for mode in modes:
-    input_dir = '/HDD/datasets/public/dota/v1'
-    output_dir = '/HDD/datasets/public/dota/v1_ship'
+    input_dir = '/HDD/datasets/public/dota/v1.5'
+    output_dir = '/HDD/datasets/public/dota/v1.5_ship'
 
     if not osp.exists(output_dir):
         os.mkdir(output_dir)
