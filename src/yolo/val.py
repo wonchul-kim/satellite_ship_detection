@@ -10,11 +10,12 @@ import math
 import csv
 from pathlib import Path
 from tqdm import tqdm
+
 ROOT = Path(__file__).resolve()
 FILE = ROOT.parent
 
 def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
-                    patch_imgsz=1024,
+                    patch_imgsz=200, imgsz=640, 
                     confidence_threshold=.3):
 
     patch_overlap_ratio = 0.1
@@ -22,8 +23,6 @@ def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
     dy = int((1. - patch_overlap_ratio) * patch_imgsz)
 
     model = YOLO(FILE / Path("yolox-obb.pt"))
-    # model = YOLO("yolo11n-obb.pt")
-    
     img_files = glob(f'{input_dir}/**/*.png', recursive=True)
     print("input_dir: ", input_dir)
     print(img_files)
@@ -52,19 +51,20 @@ def make_submission(input_dir='/HDD/datasets/dota/val/images/part1-001/images',
 
                 xmin, xmax, ymin, ymax = x, x + patch_imgsz, y, y + patch_imgsz
                 patch = img[ymin:ymax, xmin:xmax, :]
-                output = model(patch, save=True, imgsz=patch_imgsz, conf=confidence_threshold, verbose=False)[0]
+                output = model(patch, save=True, imgsz=imgsz, conf=confidence_threshold, verbose=False,
+                               show_labels=False, show_conf=False)[0]  
                 obb_result = output.obb
                 classes = obb_result.cls.tolist()
                 xywhrs = obb_result.xywhr
                 if 0 in classes:
-                    result = {'image_name': osp.split(img_file)[-1]}
                     for (cls, xywhr) in zip(classes, xywhrs):
                         if cls == 0:
+                            result = {'image_name': osp.split(img_file)[-1]}
                             cx, cy, width, height, angle = xywhr
                             result.update({'cx': cx.item() + xmin, 'cy': cy.item() + ymin, 
                                         'width': width.item(), 'height': height.item(), 
-                                        'angle': math.degrees(angle.item())})
-                    results.append(result)
+                                        'angle': np.rad2deg(angle.item())})
+                        results.append(result)
         
     with open(FILE / Path("submission.csv"), mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['image_name', 'cx', 'cy', 'width', 'height', 'angle'])
