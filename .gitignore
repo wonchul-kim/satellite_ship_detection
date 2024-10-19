@@ -6,3 +6,6 @@ runs
 wandb
 
 *.jpg
+
+
+__pycache__
